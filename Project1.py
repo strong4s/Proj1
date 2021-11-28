@@ -47,7 +47,7 @@ if my_page == 'Homepage':
     
     image = Image.open('Sprint 1 Project - Group 3 Snowball.pptx.jpg')
 
-    st.image(image, caption='Sunrise by the mountains')
+    st.image(image)
     
 elif my_page == 'Data':
     st.title("Data")
