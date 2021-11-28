@@ -13,6 +13,7 @@ from math import pi
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 from sklearn.cluster import KMeans
+from PIL import Image
 
 pd.set_option('display.float_format', '{:,.4f}'.format)
 pd.set_option('max_columns', 100)
@@ -42,7 +43,11 @@ df["In-Kind Contributions"] = df["In-Kind Contributions Received from Other Sour
 my_page = st.sidebar.radio('Page Navigation', ['Homepage', 'Data', 'Contributions', 'Heat Maps', 'Spider Maps'])
 
 if my_page == 'Homepage':
-    st.write("Powerpoint Presentation")
+    #st.write("Powerpoint Presentation")
+    
+    image = Image.open('Sprint 1 Project - Group 3 Snowball.pptx.jpg')
+
+    st.image(image, caption='Sunrise by the mountains')
     
 elif my_page == 'Data':
     st.title("Data")
