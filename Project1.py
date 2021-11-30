@@ -161,7 +161,7 @@ elif my_page == 'Expense Breakdown':
         p.gca().add_artist(my_circle)
 
         plt.show()
-        st.header(f"Spending Breakdown of {spend_candidate}")
+        st.header(f"Spending Breakdown of {option_candidate}")
         st.pyplot(plt)
         
 elif my_page == 'Top Spenders':
