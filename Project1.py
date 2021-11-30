@@ -176,7 +176,7 @@ elif my_page == 'Top Spenders':
     df_ts = df_ts.loc[ ( (df_ts["Total Expenditures Incurred"] <= ts_top ) & (df_ts["Total Expenditures Incurred"] >= ts_bot) ),["Candidate","Total Expenditures Incurred","Win"]].nlargest(15, columns="Total Expenditures Incurred")
     plt.figure(figsize=(8, 8))
     ntop = len(df_ts.index)
-    plt.title(f"Top 15 Spenders on the Range")
+    plt.title(f"Top 15 Spenders in the Range")
     ts_bp = sns.barplot(
         x='Total Expenditures Incurred',
         y='Candidate',
