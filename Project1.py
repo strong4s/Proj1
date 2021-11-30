@@ -138,7 +138,7 @@ elif my_page == 'Expense Breakdown':
     spend_candidate = df[df['Candidate'] == option_candidate].groupby('Candidate')['Transportation and Communication','Labor','Supplies and Logistics'].sum()
     
     if spend_candidate.values.sum()== 0:
-        no_data = '<p style="font-family:sans-serif; color:Red; font-size: 50px;">NO EXPENSES DATA</p>'
+        no_data = '<p style="font-family:sans-serif; color:Red; font-size: 50px;">NO EXPENSES DATA for {option_candidate}</p>'
         st.write(no_data, unsafe_allow_html=True)
     
     else:
@@ -165,7 +165,7 @@ elif my_page == 'Expense Breakdown':
         st.pyplot(plt)
         
 elif my_page == 'Top Spenders':
-    st.header(f"Top Spenders in a Range")
+    st.header(f"Top Spenders Within Range")
     df_ts = df[["Candidate","Total Expenditures","Win"]].sort_values(by = "Total Expenditures", ascending=False)
     # Page elements
     ts_top = st.slider(label="Max value",min_value= (100000000 * 0.125), max_value=(100000000 *2.0),step=(100000000 * 0.05))
@@ -176,7 +176,7 @@ elif my_page == 'Top Spenders':
     df_ts = df_ts.loc[ ( (df_ts["Total Expenditures"] <= ts_top ) & (df_ts["Total Expenditures"] >= ts_bot) ),["Candidate","Total Expenditures","Win"]].nlargest(15, columns="Total Expenditures")
     plt.figure(figsize=(8, 8))
     ntop = len(df_ts.index)
-    plt.title(f"Top {ntop} Spenders")
+    plt.title(f"Candidate Spendings")
     ts_bp = sns.barplot(
         x='Total Expenditures',
         y='Candidate',
