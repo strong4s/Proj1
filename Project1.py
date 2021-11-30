@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import folium
 from streamlit_folium import folium_static
-import geopandas as gpd
+# import geopandas as gpd
 import warnings
 warnings.filterwarnings('ignore')
 import seaborn as sns
@@ -40,7 +40,7 @@ df["Cash Contributions"] = df["Cash Contributions Received from Other Sources"] 
 df["In-Kind Contributions"] = df["In-Kind Contributions Received from Other Sources"] +df["In-Kind Contributions Received from Political Party"]
 
 
-my_page = st.sidebar.radio('Page Navigation', ['Homepage', 'Data', 'Contributions', 'Heat Maps', 'Spider Maps'])
+my_page = st.sidebar.radio('Page Navigation', ['Homepage', 'Data', 'Contributions', 'Expense Breakdown','Top Spenders','Heat Maps', 'Spider Maps'])
 
 if my_page == 'Homepage':
     #st.write("Powerpoint Presentation")
@@ -130,6 +130,58 @@ elif my_page == 'Contributions':
         plt.xticks(rotation=45)
         plt.legend().remove()
         st.pyplot(plt)
+        
+elif my_page == 'Expense Breakdown':
+    option_candidate = st.sidebar.selectbox('Which Senatorial Candidate Do You Want To See?', df['Candidate'].unique())
+    
+    spend_candidate = df[df['Candidate'] == option_candidate].groupby('Candidate')['Transportation and Communication','Labor','Supplies and Logistics'].sum()
+    
+    if spend_candidate.values.sum()== 0:
+        no_data = '<p style="font-family:sans-serif; color:Red; font-size: 50px;">NO EXPENSES DATA</p>'
+        st.write(no_data, unsafe_allow_html=True)
+    
+    else:
+        
+        spend_candidate.replace(0, float("NaN"), inplace=True)
+        spend_candidate.dropna(how='all', axis=1, inplace=True)
+        
+        labels = spend_candidate.columns
+        values = [x for x in spend_candidate.values.flatten()]
+    
+        #Using matplotlib
+        pie, ax = plt.subplots(figsize=[10,6])
+        labels = labels
+        plt.pie(x=values, autopct="%.1f%%", labels=labels, pctdistance=0.5)
+        plt.title("Expenses Breakdown", fontsize=14);
+
+        # add a circle at the center to transform it in a donut chart
+        my_circle=plt.Circle( (0,0), 0.7, color='white')
+        p=plt.gcf()
+        p.gca().add_artist(my_circle)
+
+        plt.show()
+        st.pyplot(plt)
+        
+elif my_page == 'Top Spenders':
+    st.header(f"Top Spenders in a Range")
+    df_ts = df[["Candidate","Total Expenditures","Win"]].sort_values(by = "Total Expenditures", ascending=False)
+    # Page elements
+    ts_top = st.slider(label="Max value",min_value= (100000000 * 0.125), max_value=(100000000 *2.0),step=(100000000 * 0.05))
+    ts_bot = st.slider(label="Min value",min_value= (00000000 * 0.125), max_value=(100000000 *.11),step=(750000.00))
+    # "Top N Spenders"
+
+    # * Visualizing the graph
+    df_ts = df_ts.loc[ ( (df_ts["Total Expenditures"] <= ts_top ) & (df_ts["Total Expenditures"] >= ts_bot) ),["Candidate","Total Expenditures","Win"]].nlargest(15, columns="Total Expenditures")
+    plt.figure(figsize=(8, 8))
+    ntop = len(df_ts.index)
+    plt.title(f"Top {ntop} Spenders")
+    ts_bp = sns.barplot(
+        x='Total Expenditures',
+        y='Candidate',
+        hue='Win',
+        data=df_ts, dodge=False
+    )
+    st.pyplot(plt)
         
 elif my_page == 'Heat Maps':
     corr_type = st.sidebar.selectbox('Which Feature Correlation Do You Want to See?', ["Candidate Spending", "Contribution Type", "Contribution Source"])
