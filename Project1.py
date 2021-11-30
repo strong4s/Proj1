@@ -166,19 +166,19 @@ elif my_page == 'Expense Breakdown':
         
 elif my_page == 'Top Spenders':
     st.header(f"Top Spenders Within Range")
-    df_ts = df[["Candidate","Total Expenditures","Win"]].sort_values(by = "Total Expenditures", ascending=False)
+    df_ts = df[["Candidate","Total Expenditures Incurred","Win"]].sort_values(by = "Total Expenditures Incurred", ascending=False)
     # Page elements
     ts_top = st.slider(label="Max value",min_value= (100000000 * 0.125), max_value=(100000000 *2.0),step=(100000000 * 0.05))
     ts_bot = st.slider(label="Min value",min_value= (00000000 * 0.125), max_value=(100000000 *.11),step=(750000.00))
     # "Top N Spenders"
 
     # * Visualizing the graph
-    df_ts = df_ts.loc[ ( (df_ts["Total Expenditures"] <= ts_top ) & (df_ts["Total Expenditures"] >= ts_bot) ),["Candidate","Total Expenditures","Win"]].nlargest(15, columns="Total Expenditures")
+    df_ts = df_ts.loc[ ( (df_ts["Total Expenditures Incurred"] <= ts_top ) & (df_ts["Total Expenditures Incurred"] >= ts_bot) ),["Candidate","Total Expenditures Incurred","Win"]].nlargest(15, columns="Total Expenditures Incurred")
     plt.figure(figsize=(8, 8))
     ntop = len(df_ts.index)
     plt.title(f"Top 15 Spenders on the Range")
     ts_bp = sns.barplot(
-        x='Total Expenditures',
+        x='Total Expenditures Incurred',
         y='Candidate',
         hue='Win',
         data=df_ts, dodge=False
