@@ -135,7 +135,7 @@ elif my_page == 'Expense Breakdown':
     
     option_candidate = st.sidebar.selectbox('Which Senatorial Candidate Do You Want To See?', df['Candidate'].unique())
     
-    spend_candidate = df[df['Candidate'] == option_candidate].groupby('Candidate')['Transportation and Communication','Labor','Supplies and Logistics'].sum()
+    spend_candidate = df[df['Candidate'] == option_candidate].groupby('Candidate')['Transportation and Communication','Labor','Supplies and Logistics', "Pol Ads"].sum()
     
     if spend_candidate.values.sum()== 0:
         no_data = '<p style="font-family:sans-serif; color:Red; font-size: 50px;">NO EXPENSES DATA</p>'
@@ -152,14 +152,19 @@ elif my_page == 'Expense Breakdown':
         #Using matplotlib
         pie, ax = plt.subplots(figsize=[10,6])
         labels = labels
-        plt.pie(x=values, autopct="%.1f%%", labels=labels, pctdistance=0.5)
+        plt.pie(x=values, autopct="%.1f%%", labels=labels, pctdistance=1.1, labeldistance=1.25)
+        #patches, texts =plt.pie(x=values, autopct="%.1f%%", labels=labels, pctdistance=0.5)
         plt.title("Expenses Breakdown ", fontsize=14);
+        #plt.legend(patches, labels, loc='left center', bbox_to_anchor=(-0.1, 1.), fontsize=8)
+        plt.tight_layout()
+        #plt.legend(loc='best')
 
+        
         # add a circle at the center to transform it in a donut chart
         my_circle=plt.Circle( (0,0), 0.7, color='white')
         p=plt.gcf()
         p.gca().add_artist(my_circle)
-
+        #plt.legend(loc='best', bbox_to_anchor=(0.5, 0., 0.5, 0.5))
         plt.show()
         st.header(f"Spending Breakdown of {option_candidate}")
         st.pyplot(plt)
