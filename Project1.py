@@ -154,7 +154,7 @@ elif my_page == 'Expense Breakdown':
         labels = labels
         plt.pie(x=values, autopct="%.1f%%", labels=labels, pctdistance=1.1, labeldistance=1.25)
         #patches, texts =plt.pie(x=values, autopct="%.1f%%", labels=labels, pctdistance=0.5)
-        plt.title("Expenses Breakdown ", fontsize=14);
+        #plt.title("Expenses Breakdown ", fontsize=14);
         #plt.legend(patches, labels, loc='left center', bbox_to_anchor=(-0.1, 1.), fontsize=8)
         plt.tight_layout()
         #plt.legend(loc='best')
