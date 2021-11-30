@@ -138,7 +138,7 @@ elif my_page == 'Expense Breakdown':
     spend_candidate = df[df['Candidate'] == option_candidate].groupby('Candidate')['Transportation and Communication','Labor','Supplies and Logistics'].sum()
     
     if spend_candidate.values.sum()== 0:
-        no_data = '<p style="font-family:sans-serif; color:Red; font-size: 50px;">NO EXPENSES DATA for {option_candidate}</p>'
+        no_data = '<p style="font-family:sans-serif; color:Red; font-size: 50px;">NO EXPENSES DATA</p>'
         st.write(no_data, unsafe_allow_html=True)
     
     else:
@@ -176,7 +176,7 @@ elif my_page == 'Top Spenders':
     df_ts = df_ts.loc[ ( (df_ts["Total Expenditures"] <= ts_top ) & (df_ts["Total Expenditures"] >= ts_bot) ),["Candidate","Total Expenditures","Win"]].nlargest(15, columns="Total Expenditures")
     plt.figure(figsize=(8, 8))
     ntop = len(df_ts.index)
-    plt.title(f"Candidate Spendings")
+    plt.title(f"Top 15 Spenders on the Range")
     ts_bp = sns.barplot(
         x='Total Expenditures',
         y='Candidate',
