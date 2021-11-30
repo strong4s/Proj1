@@ -132,6 +132,7 @@ elif my_page == 'Contributions':
         st.pyplot(plt)
         
 elif my_page == 'Expense Breakdown':
+    
     option_candidate = st.sidebar.selectbox('Which Senatorial Candidate Do You Want To See?', df['Candidate'].unique())
     
     spend_candidate = df[df['Candidate'] == option_candidate].groupby('Candidate')['Transportation and Communication','Labor','Supplies and Logistics'].sum()
@@ -152,7 +153,7 @@ elif my_page == 'Expense Breakdown':
         pie, ax = plt.subplots(figsize=[10,6])
         labels = labels
         plt.pie(x=values, autopct="%.1f%%", labels=labels, pctdistance=0.5)
-        plt.title("Expenses Breakdown", fontsize=14);
+        plt.title("Expenses Breakdown ", fontsize=14);
 
         # add a circle at the center to transform it in a donut chart
         my_circle=plt.Circle( (0,0), 0.7, color='white')
@@ -160,6 +161,7 @@ elif my_page == 'Expense Breakdown':
         p.gca().add_artist(my_circle)
 
         plt.show()
+        st.header(f"Spending Breakdown of {spend_candidate}")
         st.pyplot(plt)
         
 elif my_page == 'Top Spenders':
